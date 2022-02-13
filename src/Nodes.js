@@ -45,25 +45,45 @@ export default function Nodes({ $app, initialState, onClick, onBackClick }) {
         ? `<div class="Node"><img src="./assets/prev.png"></div>${nodesTemplate}`
         : nodesTemplate;
     }
-
-    // 렌더링된 이후 클릭 가능한 모든 요소에 click 이벤트 걸기
-    this.$target.querySelectorAll('.Node').forEach(($node) => {
-      $node.addEventListener('click', (e) => {
-        // dataset을 통해 data-로 시작하는 attribute를 꺼내올 수 있음
-        const { nodeId } = e.target.dataset;
-        // prev버튼에는 nodeID가 없다.
-        if (!nodeId) {
-          this.onBackClick();
-        }
-        const selectedNode = this.state.nodes.find(
-          (node) => node.id === nodeId
-        );
-        if (selectedNode) {
-          this.onClick(selectedNode);
-        }
-      });
-    });
   };
+
+  this.$target.addEventListener('click', (e) => {
+    const $node = e.target.closest('.Node');
+
+    if ($node) {
+      const { nodeId } = $node.dataset;
+
+      if (!nodeId) {
+        this.onBackClick();
+        return;
+      }
+
+      const selectedNode = this.state.nodes.find((node) => node.id === nodeId);
+
+      if (selectedNode) {
+        this.onClick(selectedNode);
+      }
+    }
+  });
+
+  //   // 렌더링된 이후 클릭 가능한 모든 요소에 click 이벤트 걸기
+  //   this.$target.querySelectorAll('.Node').forEach(($node) => {
+  //     $node.addEventListener('click', (e) => {
+  //       // dataset을 통해 data-로 시작하는 attribute를 꺼내올 수 있음
+  //       const { nodeId } = e.target.dataset;
+  //       // prev버튼에는 nodeID가 없다.
+  //       if (!nodeId) {
+  //         this.onBackClick();
+  //       }
+  //       const selectedNode = this.state.nodes.find(
+  //         (node) => node.id === nodeId
+  //       );
+  //       if (selectedNode) {
+  //         this.onClick(selectedNode);
+  //       }
+  //     });
+  //   });
+  // };
 
   // 인스턴스화 이후 바로 render 함수를 실행하며 new로 생성하자마자 렌더링 되도록 할 수 있음
   this.render();
