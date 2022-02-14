@@ -26,7 +26,7 @@ export default function App($app) {
       res = await request(id);
     } catch (e) {
       alert('request 에러가 발생했습니다.');
-      console.log(e);
+      alert(e);
     } finally {
       this.setState({
         ...this.state,
@@ -46,6 +46,7 @@ export default function App($app) {
           ...this.state,
           depth: [],
           nodes: cache.root,
+          isRoot: true,
         });
         return;
       }
