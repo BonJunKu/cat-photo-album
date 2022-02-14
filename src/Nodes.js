@@ -31,7 +31,7 @@ export default function Nodes({ $app, initialState, onClick, onBackClick }) {
             node.type === 'FILE'
               ? './assets/file.png'
               : './assets/directory.png';
-
+          console.log(node.type);
           return `
             <div class="Node" data-node-id="${node.id}">
               <img src="${iconPath}" />
