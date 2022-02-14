@@ -15,6 +15,28 @@ export default function App($app) {
     isLoading: true,
   };
 
+  const requestWithLoadingImg = async (id) => {
+    let res;
+    try {
+      this.setState({
+        ...this.state,
+        isLoading: true,
+      });
+
+      res = await request(id);
+    } catch (e) {
+      alert('request 에러가 발생했습니다.');
+      console.log(e);
+    } finally {
+      this.setState({
+        ...this.state,
+        isLoading: false,
+      });
+
+      return res;
+    }
+  };
+
   const breadcrumb = new Breadcrumb({
     $app,
     initialState: this.state.depth,
@@ -68,7 +90,7 @@ export default function App($app) {
               isRoot: false,
             });
           } else {
-            const nextNodes = await request(node.id);
+            const nextNodes = await requestWithLoadingImg(node.id);
 
             this.setState({
               ...this.state,
@@ -107,7 +129,7 @@ export default function App($app) {
             nodes: cache.root,
           });
         } else {
-          const prevNodes = await request(prevNodeId);
+          // const prevNodes = await request(prevNodeId);
 
           this.setState({
             ...nextState,
@@ -137,29 +159,14 @@ export default function App($app) {
   };
 
   const init = async () => {
-    try {
-      this.setState({
-        ...this.state,
-        isLoading: true,
-      });
-      const rootNodes = await request();
-      this.setState({
-        ...this.state,
-        isRoot: true,
-        nodes: rootNodes,
-      });
+    const rootNodes = await requestWithLoadingImg();
+    this.setState({
+      ...this.state,
+      isRoot: true,
+      nodes: rootNodes,
+    });
 
-      cache.root = rootNodes;
-    } catch (e) {
-      // 에러처리 하기
-      console.log('request에러');
-      console.log(e);
-    } finally {
-      this.setState({
-        ...this.state,
-        isLoading: false,
-      });
-    }
+    cache.root = rootNodes;
   };
 
   init();
