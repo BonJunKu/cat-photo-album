@@ -46,6 +46,9 @@ export default function App($app) {
   const imageView = new ImageView({
     $app,
     initialState: this.state.selectedNodeImage,
+    CloseImage: () => {
+      this.setState({ ...this.state, selectedFilePath: null });
+    },
   });
 
   const nodes = new Nodes({
