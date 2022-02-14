@@ -58,8 +58,6 @@ export default function App($app) {
       try {
         if (node.type === 'DIRECTORY') {
           if (cache[node.id]) {
-            console.log('현재 캐시', cache);
-            console.log('캐싱하는경우', cache[node.id]);
             this.setState({
               ...this.state,
               depth: [...this.state.depth, node],
@@ -68,7 +66,7 @@ export default function App($app) {
             });
           } else {
             const nextNodes = await request(node.id);
-            console.log('캐싱 안하는 경우 nextNodes', nextNodes);
+
             this.setState({
               ...this.state,
               depth: [...this.state.depth, node],
@@ -96,7 +94,6 @@ export default function App($app) {
           nextState.depth.length === 0
             ? null
             : nextState.depth[nextState.depth.length - 1].id;
-        console.log(nextState.depth);
 
         if (prevNodeId === null) {
           //   const rootNodes = await request()
@@ -108,11 +105,7 @@ export default function App($app) {
           });
         } else {
           const prevNodes = await request(prevNodeId);
-          console.log('--뒤로갈때--');
-          console.log('id', prevNodeId);
-          console.log(prevNodes);
-          console.log(cache);
-          console.log(cache.prevNodeId);
+
           this.setState({
             ...nextState,
             isRoot: false,
